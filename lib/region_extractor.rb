@@ -22,7 +22,7 @@ class RegionExtractor
     @resulting_text = @text.gsub(/(?:\d{6,7}\s*,\s*\d{6,7};\s*){2,}\d{6,7}\s*,\s*\d{6,7}/) do |region_string|
       i += 1
       
-      match = @text.match(/UTM Zone (\d+)/)
+      match = @text.match(/UTM [z|Z]one (\d+)/)
       zone = match ? match[1] : ''
       points = region_string.split(/\s*;\s*/).map do |c|
         x , y = c.split(/\s*,\s*/)
