@@ -5,11 +5,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{region_extractor}
-  s.version = "0.0.0"
+  s.version = "0.0.1"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Andrew Carpenter"]
-  s.date = %q{2010-06-09}
+  s.date = %q{2010-06-12}
   s.description = %q{Attempts to extract geographic regions mentioned in txt/html documents.}
   s.email = %q{andrew.main@gmail.com}
   s.extra_rdoc_files = [
@@ -26,11 +26,12 @@ Gem::Specification.new do |s|
      "lib/region_extractor.rb",
      "lib/region_extractor/point.rb",
      "lib/region_extractor/region.rb",
+     "region_extractor.gemspec",
      "spec/region_extractor_spec.rb",
      "spec/spec.opts",
      "spec/spec_helper.rb"
   ]
-  s.homepage = %q{http://github.com/criticaljuncture/region_extractor}
+  s.homepage = %q{http://github.com/andrewcarpenter/region_extractor}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubygems_version = %q{1.3.6}

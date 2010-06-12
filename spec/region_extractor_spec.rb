@@ -64,6 +64,22 @@ describe "RegionExtractor" do
       end
     end
     
+    context "with regions to exclude" do
+      before(:each) do
+        @extractor = RegionExtractor.new("<p>UTM zone 4 451377, 2420941; 451318, 2421296; 451365, 2421383; 451432, 2421109 excluding land bound by 457490, 2421812; 457400, 2421778; 457352, 2421693") do |str, region, i|
+          "#{str}[POST]"
+        end
+      end
+      
+      it "should find the right number of regions" do
+        @extractor.regions.size.should == 1
+      end
+      
+      it "should not overwrite the exclude" do
+        @extractor.resulting_text.should == "<p>UTM zone 4 451377, 2420941; 451318, 2421296; 451365, 2421383; 451432, 2421109[POST] excluding land bound by 457490, 2421812; 457400, 2421778; 457352, 2421693"
+      end
+    end
+    
     context "with a block" do
       it "puts a replacement in for each region" do
         extractor = RegionExtractor.new("UTM Zone 10 557923, 4838857; 557919, 4838854; 557919, 4838854. Then 457631, 2421540; 457678, 2421675; 457766, 2421821; 457637, 2421453.") do |str, region, i|

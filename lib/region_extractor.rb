@@ -18,23 +18,29 @@ class RegionExtractor
   private
   
   def extract!
-    i = 0
-    @resulting_text = @text.gsub(/(?:\d{6,7}\s*,\s*\d{6,7};\s*){2,}\d{6,7}\s*,\s*\d{6,7}/) do |region_string|
-      i += 1
-      
+    @resulting_text = @text.gsub(/(?:excluding land bound by )?(?:\d{6,7}\s*,\s*\d{6,7};\s*){2,}\d{6,7}\s*,\s*\d{6,7}/) do |region_string|
       match = @text.match(/UTM [z|Z]one (\d+)/)
       zone = match ? match[1] : ''
-      points = region_string.split(/\s*;\s*/).map do |c|
+      
+      points = region_string.sub(/^excluding land bound by /,'').split(/\s*;\s*/).map do |c|
         x , y = c.split(/\s*,\s*/)
         Point.new(x.to_i,y.to_i)
       end
-      region = Region.new(:points => points, :zone => zone)
-      @regions << region
       
-      if @region_transformer
-        @region_transformer.call(region_string, region, i-1)
+      region = Region.new(:points => points, :zone => zone)
+      if region_string =~ /^excluding/
+        prior_region = @regions.last
+        prior_region.add_hole(region)
+        
+        region_string # don't modify the document
       else
-        nil
+        @regions << region
+
+        if @region_transformer
+          @region_transformer.call(region_string, region, @regions.size-1)
+        else
+          nil
+        end
       end
     end
   end
